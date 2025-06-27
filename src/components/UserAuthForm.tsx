@@ -41,7 +41,7 @@ const UserAuthForm: FC<UserAuthFormProps> = ({ className, ...props }) => {
                 disabled={isLoading}
             >
                 {isLoading ? null : <Icons.google className="h-4 w-4 mr-2" />}
-                Google
+                Github
             </Button>
         </div>
     );
