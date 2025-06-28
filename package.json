@@ -40,6 +40,7 @@
         "cmdk": "^1.1.1",
         "date-fns": "^4.1.0",
         "editorjs-react-renderer": "^3.5.1",
+        "framer-motion": "^12.19.2",
         "lodash.debounce": "^4.0.8",
         "lucide-react": "^0.523.0",
         "nanoid": "^5.1.5",
