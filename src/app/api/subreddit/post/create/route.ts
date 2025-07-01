@@ -51,7 +51,7 @@ export async function POST(req: Request) {
         });
 
         // Publish to Redis Queue for background processing
-        await redis.lpush(
+        const result = await redis.lpush(
             "post_processing_queue",
             JSON.stringify({
                 postId: post.id,
@@ -62,7 +62,7 @@ export async function POST(req: Request) {
                 createdAt: post.createdAt.toISOString(),
             })
         );
-
+        console.log("New Redis list length:", result);
         return new Response("OK");
     } catch (error) {
         if (error instanceof z.ZodError) {
