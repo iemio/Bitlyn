@@ -1,3 +1,4 @@
+"use client";
 import React, { useState, useCallback } from "react";
 import { Search, Filter, Sparkles, Tag, TrendingUp, Clock } from "lucide-react";
 
