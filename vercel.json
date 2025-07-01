@@ -3,13 +3,5 @@
         "api/background/process-posts.ts": {
             "maxDuration": 300
         }
-    },
-    "env": {
-        "UPSTASH_REDIS_REST_URL": "@upstash-redis-url",
-        "UPSTASH_REDIS_REST_TOKEN": "@upstash-redis-token",
-        "QDRANT_URL": "@qdrant-url",
-        "QDRANT_API_KEY": "@qdrant-api-key",
-        "GEMINI_API_KEY": "@gemini-api-key",
-        "WEBHOOK_SECRET": "@webhook-secret"
     }
 }
