@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 export async function POST() {
     try {
-        const webhookUrl = `${process.env.VERCEL_URL}/api/background/process-posts`;
+        const webhookUrl = `https://${process.env.VERCEL_URL}/api/background/process-posts`;
 
         const response = await fetch(webhookUrl, {
             method: "POST",

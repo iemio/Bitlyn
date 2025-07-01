@@ -1,6 +1,6 @@
 {
     "functions": {
-        "app/api/background/process-posts/route.ts": {
+        "src/app/api/background/process-posts/route.ts": {
             "maxDuration": 300
         }
     }
