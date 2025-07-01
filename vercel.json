@@ -1,7 +1,8 @@
 {
     "functions": {
-        "api/background/process-posts/route.ts": {
-            "maxDuration": 300
+        "app/api/background/process-posts/route.ts": {
+            "maxDuration": 300,
+            "runtime": "edge"
         }
     }
 }
