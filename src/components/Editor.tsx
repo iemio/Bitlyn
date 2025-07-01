@@ -31,7 +31,7 @@ export const Editor: React.FC<EditorProps> = ({ subredditId }) => {
         resolver: zodResolver(PostValidator),
         defaultValues: {
             subredditId,
-            title: "",
+            title: "abx",
             content: null,
         },
     });
@@ -52,6 +52,7 @@ export const Editor: React.FC<EditorProps> = ({ subredditId }) => {
                 content,
                 subredditId,
             };
+            console.log(payload);
             const { data } = await axios.post(
                 "/api/subreddit/post/create",
                 payload
@@ -141,6 +142,7 @@ export const Editor: React.FC<EditorProps> = ({ subredditId }) => {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             for (const [_key, value] of Object.entries(errors)) {
                 // value;
+                console.error("Validation Errors:", errors);
                 toast({
                     title: "Something went wrong.",
                     description: (value as { message: string }).message,
@@ -183,7 +185,7 @@ export const Editor: React.FC<EditorProps> = ({ subredditId }) => {
             content: blocks,
             subredditId,
         };
-
+        console.log(payload);
         createPost(payload);
     }
 
@@ -191,6 +193,7 @@ export const Editor: React.FC<EditorProps> = ({ subredditId }) => {
         return null;
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { ref: titleRef, ...rest } = register("title");
 
     return (
@@ -203,7 +206,7 @@ export const Editor: React.FC<EditorProps> = ({ subredditId }) => {
                 <div className="prose prose-stone dark:prose-invert">
                     <TextareaAutosize
                         ref={(e) => {
-                            // titleRef(e);
+                            titleRef(e);
                             _titleRef.current = e;
                         }}
                         {...rest}
