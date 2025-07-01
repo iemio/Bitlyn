@@ -20,7 +20,8 @@ export async function GET(req: Request) {
         });
 
         followedCommunitiesIds = followedCommunities.map(
-            (sub) => sub.subreddit.id
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (sub: any) => sub.subreddit.id
         );
     }
 
