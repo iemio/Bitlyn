@@ -9,8 +9,8 @@ import "@/styles/globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-    title: "Bytelin",
-    description: "A Reddit clone built with Next.js and TypeScript.",
+    title: "Bitlyn",
+    description: "",
 };
 
 export default function RootLayout({
