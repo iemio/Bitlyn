@@ -31,7 +31,7 @@ export const Editor: React.FC<EditorProps> = ({ subredditId }) => {
         resolver: zodResolver(PostValidator),
         defaultValues: {
             subredditId,
-            title: "abx",
+            title: "",
             content: null,
         },
     });

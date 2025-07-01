@@ -12,25 +12,26 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
 interface SubRedditPostPageProps {
-    params: {
+    params: Promise<{
         postId: string;
-    };
+    }>;
 }
 
 export const dynamic = "force-dynamic";
 export const fetchCache = "force-no-store";
 
 const SubRedditPostPage = async ({ params }: SubRedditPostPageProps) => {
-    const cachedPost = (await redis.hgetall(
-        `post:${params.postId}`
-    )) as CachedPost;
+    // Await params before using its properties
+    const { postId } = await params;
+
+    const cachedPost = (await redis.hgetall(`post:${postId}`)) as CachedPost;
 
     let post: (Post & { votes: Vote[]; author: User }) | null = null;
 
     if (!cachedPost) {
         post = await db.post.findFirst({
             where: {
-                id: params.postId,
+                id: postId,
             },
             include: {
                 votes: true,
@@ -50,7 +51,7 @@ const SubRedditPostPage = async ({ params }: SubRedditPostPageProps) => {
                         getData={async () => {
                             return await db.post.findUnique({
                                 where: {
-                                    id: params.postId,
+                                    id: postId,
                                 },
                                 include: {
                                     votes: true,
