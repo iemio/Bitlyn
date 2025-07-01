@@ -1,5 +1,5 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+// Enhanced Prisma Schema with metadata fields
+// prisma/schema.prisma
 
 generator client {
   provider = "prisma-client-js"
@@ -13,6 +13,13 @@ datasource db {
 enum VoteType {
   UP
   DOWN
+}
+
+enum PostStatus {
+  DRAFT
+  PUBLISHED
+  PROCESSING
+  INDEXED
 }
 
 model Account {
@@ -95,8 +102,35 @@ model Post {
   subreddit   Subreddit @relation(fields: [subredditId], references: [id])
   subredditId String
   comments    Comment[]
-
   votes       Vote[]
+
+  // New fields for vector search and metadata
+  status          PostStatus @default(PUBLISHED)
+  isIndexed       Boolean    @default(false)
+  processingError String?
+
+  // AI-generated metadata
+  summary         String?
+  tags            String[]   @default([])
+  category        String?
+  sentiment       String?    // 'positive', 'negative', 'neutral'
+
+  // Search and engagement metrics
+  viewCount       Int        @default(0)
+  searchScore     Float?     // For ranking search results
+
+  // Timestamps for processing pipeline
+  queuedAt        DateTime?
+  processedAt     DateTime?
+  indexedAt       DateTime?
+
+  @@index([createdAt])
+  @@index([subredditId])
+  @@index([authorId])
+  @@index([category])
+  @@index([sentiment])
+  @@index([isIndexed])
+  @@index([status])
 }
 
 model Comment {
@@ -134,4 +168,30 @@ model CommentVote {
   type      VoteType
 
   @@id([userId, commentId])
+}
+
+// New model for tracking processing queue
+model ProcessingQueue {
+  id        String   @id @default(cuid())
+  postId    String   @unique
+  status    String   @default("PENDING") // PENDING, PROCESSING, COMPLETED, FAILED
+  attempts  Int      @default(0)
+  lastError String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status])
+  @@index([createdAt])
+}
+
+// New model for search analytics
+model SearchAnalytics {
+  id        String   @id @default(cuid())
+  query     String
+  results   Int
+  userId    String?
+  timestamp DateTime @default(now())
+
+  @@index([timestamp])
+  @@index([query])
 }

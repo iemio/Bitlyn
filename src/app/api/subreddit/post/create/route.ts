@@ -1,5 +1,6 @@
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { redis } from "@/lib/redis";
 import { PostValidator } from "@/lib/validators/post";
 import { z } from "zod";
 
@@ -27,14 +28,40 @@ export async function POST(req: Request) {
             return new Response("Subscribe to post", { status: 403 });
         }
 
-        await db.post.create({
+        const post = await db.post.create({
             data: {
                 title,
                 content,
                 authorId: session.user.id,
                 subredditId,
             },
+            include: {
+                author: {
+                    select: {
+                        username: true,
+                        name: true,
+                    },
+                },
+                subreddit: {
+                    select: {
+                        name: true,
+                    },
+                },
+            },
         });
+
+        // Publish to Redis Queue for background processing
+        await redis.lpush(
+            "post_processing_queue",
+            JSON.stringify({
+                postId: post.id,
+                title: post.title,
+                content: post.content,
+                authorName: post.author.username || post.author.name,
+                subredditName: post.subreddit.name,
+                createdAt: post.createdAt.toISOString(),
+            })
+        );
 
         return new Response("OK");
     } catch (error) {

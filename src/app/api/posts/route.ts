@@ -4,7 +4,6 @@ import { z } from "zod";
 
 export async function GET(req: Request) {
     const url = new URL(req.url);
-
     const session = await getAuthSession();
 
     let followedCommunitiesIds: string[] = [];
@@ -20,24 +19,68 @@ export async function GET(req: Request) {
         });
 
         followedCommunitiesIds = followedCommunities.map(
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             (sub: any) => sub.subreddit.id
         );
     }
 
     try {
-        const { limit, page, subredditName } = z
+        const { limit, page, subredditName, searchQuery } = z
             .object({
                 limit: z.string(),
                 page: z.string(),
                 subredditName: z.string().nullish().optional(),
+                searchQuery: z.string().nullish().optional(),
             })
             .parse({
                 subredditName: url.searchParams.get("subredditName"),
                 limit: url.searchParams.get("limit"),
                 page: url.searchParams.get("page"),
+                searchQuery: url.searchParams.get("searchQuery"),
             });
 
+        // If there's a search query, use vector search
+        if (searchQuery) {
+            const vectorSearchResponse = await fetch(
+                `${process.env.NEXT_PUBLIC_BASE_URL}/api/search/vector`,
+                {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        query: searchQuery,
+                        limit: parseInt(limit),
+                        subredditName,
+                    }),
+                }
+            );
+
+            if (vectorSearchResponse.ok) {
+                const vectorResults = await vectorSearchResponse.json();
+                const postIds = vectorResults.results.map((r: any) => r.postId);
+
+                if (postIds.length > 0) {
+                    const posts = await db.post.findMany({
+                        where: {
+                            id: {
+                                in: postIds,
+                            },
+                        },
+                        include: {
+                            subreddit: true,
+                            votes: true,
+                            author: true,
+                            comments: true,
+                        },
+                        orderBy: {
+                            createdAt: "desc",
+                        },
+                    });
+
+                    return new Response(JSON.stringify(posts));
+                }
+            }
+        }
+
+        // Regular database search (existing logic)
         let whereClause = {};
 
         if (subredditName) {
@@ -58,7 +101,7 @@ export async function GET(req: Request) {
 
         const posts = await db.post.findMany({
             take: parseInt(limit),
-            skip: (parseInt(page) - 1) * parseInt(limit), // skip should start from 0 for page 1
+            skip: (parseInt(page) - 1) * parseInt(limit),
             orderBy: {
                 createdAt: "desc",
             },
@@ -72,8 +115,8 @@ export async function GET(req: Request) {
         });
 
         return new Response(JSON.stringify(posts));
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
+        console.error("Fetch posts error:", error);
         return new Response("Could not fetch posts", { status: 500 });
     }
 }
