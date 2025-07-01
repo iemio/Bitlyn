@@ -91,6 +91,7 @@ const EnhancedSearchComponent = () => {
                     const posts = await response.json();
                     // Transform regular posts to match SearchResult interface
                     const transformedResults: SearchResult[] = posts.map(
+                        //eslint-disable-next-line @typescript-eslint/no-explicit-any
                         (post: any) => ({
                             postId: post.id,
                             score: 1,
@@ -335,7 +336,7 @@ const EnhancedSearchComponent = () => {
                 {!loading && results.length === 0 && query && (
                     <div className="text-center py-8 text-gray-500">
                         <Search className="w-12 h-12 mx-auto mb-2 opacity-50" />
-                        <p>No results found for "{query}"</p>
+                        <p>No results found for &quot;{query}&quot;</p>
                         <p className="text-sm">
                             Try adjusting your search terms or filters
                         </p>
@@ -346,7 +347,8 @@ const EnhancedSearchComponent = () => {
                     <>
                         <div className="flex items-center justify-between mb-4">
                             <p className="text-sm text-gray-600">
-                                Found {results.length} results for "{query}"
+                                Found {results.length} results for &quot;{query}
+                                &quot;
                             </p>
                             {isVectorSearch && (
                                 <div className="flex items-center gap-1 text-xs text-purple-600">
@@ -449,12 +451,14 @@ const EnhancedSearchComponent = () => {
                     </h4>
                     <ul className="text-sm text-blue-700 space-y-1">
                         <li>
-                            • Use AI Search for semantic understanding: "posts
-                            about machine learning for beginners"
+                            • Use AI Search for semantic understanding:
+                            &quot;posts about machine learning for
+                            beginners&quot;
                         </li>
                         <li>
-                            • Try specific queries: "funny cat videos" or
-                            "serious discussion about climate change"
+                            • Try specific queries: &quot;funny cat videos&quot;
+                            or &quot;serious discussion about climate
+                            change&quot;
                         </li>
                         <li>
                             • Use filters to narrow down results by category,

@@ -19,6 +19,7 @@ export async function GET(req: Request) {
         });
 
         followedCommunitiesIds = followedCommunities.map(
+            //eslint-disable-next-line @typescript-eslint/no-explicit-any
             (sub: any) => sub.subreddit.id
         );
     }
@@ -55,6 +56,7 @@ export async function GET(req: Request) {
 
             if (vectorSearchResponse.ok) {
                 const vectorResults = await vectorSearchResponse.json();
+                //eslint-disable-next-line @typescript-eslint/no-explicit-any
                 const postIds = vectorResults.results.map((r: any) => r.postId);
 
                 if (postIds.length > 0) {
