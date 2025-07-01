@@ -10,6 +10,7 @@ export async function generateEmbedding(text: string): Promise<number[]> {
 
 export async function generateMetadata(
     title: string,
+    //eslint-disable-next-line @typescript-eslint/no-explicit-any
     content: any
 ): Promise<{
     summary: string;

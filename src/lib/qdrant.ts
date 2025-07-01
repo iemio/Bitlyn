@@ -11,6 +11,7 @@ export const COLLECTION_NAME = "reddit_posts";
 export async function initializeQdrantCollection() {
     try {
         await qdrantClient.getCollection(COLLECTION_NAME);
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
         // Collection doesn't exist, create it
         await qdrantClient.createCollection(COLLECTION_NAME, {
