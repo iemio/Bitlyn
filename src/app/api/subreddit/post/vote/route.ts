@@ -53,8 +53,8 @@ export async function PATCH(req: Request) {
                     },
                 });
 
-                // Recount the votes
-                const votesAmt = post.votes.reduce((acc, vote) => {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                const votesAmt = post.votes.reduce((acc: any, vote: any) => {
                     if (vote.type === "UP") return acc + 1;
                     if (vote.type === "DOWN") return acc - 1;
                     return acc;
@@ -89,8 +89,8 @@ export async function PATCH(req: Request) {
                 },
             });
 
-            // Recount the votes
-            const votesAmt = post.votes.reduce((acc, vote) => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const votesAmt = post.votes.reduce((acc: any, vote: any) => {
                 if (vote.type === "UP") return acc + 1;
                 if (vote.type === "DOWN") return acc - 1;
                 return acc;
