@@ -26,6 +26,7 @@ const formatDistanceLocale = {
     almostXYears: "{{count}}y",
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function formatDistance(token: string, count: number, options?: any): string {
     options = options || {};
 

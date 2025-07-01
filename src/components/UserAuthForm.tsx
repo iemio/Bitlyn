@@ -8,7 +8,9 @@ import { Button } from "@/components/ui/Button";
 import { useToast } from "@/hooks/use-toast";
 import { Icons } from "./Icons";
 
-interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
+interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
+    someCustomProp?: string;
+}
 
 const UserAuthForm: FC<UserAuthFormProps> = ({ className, ...props }) => {
     const { toast } = useToast();
@@ -19,6 +21,7 @@ const UserAuthForm: FC<UserAuthFormProps> = ({ className, ...props }) => {
 
         try {
             await signIn("github");
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (error) {
             toast({
                 title: "Error",

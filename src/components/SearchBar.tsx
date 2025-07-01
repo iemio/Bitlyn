@@ -18,9 +18,9 @@ import {
 import { useOnClickOutside } from "@/hooks/use-on-click-outside";
 import { Users } from "lucide-react";
 
-interface SearchBarProps {}
+// interface SearchBarProps {}
 
-const SearchBar: FC<SearchBarProps> = ({}) => {
+const SearchBar: FC = () => {
     const [input, setInput] = useState<string>("");
     const pathname = usePathname();
     const commandRef = useRef<HTMLDivElement>(null);

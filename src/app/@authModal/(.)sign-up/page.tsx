@@ -2,9 +2,7 @@ import CloseModal from "@/components/CloseModal";
 import SignUp from "@/components/SignUp";
 import { FC } from "react";
 
-interface pageProps {}
-
-const page: FC<pageProps> = ({}) => {
+const page: FC = () => {
     return (
         <div className="fixed inset-0 bg-zinc-900/20 z-10 backdrop-blur-md">
             <div className="container flex items-center h-full max-w-lg mx-auto">

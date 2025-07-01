@@ -24,6 +24,7 @@ const CustomFeed = async () => {
             subreddit: {
                 name: {
                     in: followedCommunities.map(
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                         (sub: any) => sub.subreddit.name
                     ),
                 },

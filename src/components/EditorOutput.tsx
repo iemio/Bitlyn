@@ -11,6 +11,7 @@ const Output = dynamic(
 );
 
 interface EditorOutputProps {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     content: any;
 }
 

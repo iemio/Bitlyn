@@ -138,8 +138,9 @@ export const Editor: React.FC<EditorProps> = ({ subredditId }) => {
 
     useEffect(() => {
         if (Object.keys(errors).length) {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             for (const [_key, value] of Object.entries(errors)) {
-                value;
+                // value;
                 toast({
                     title: "Something went wrong.",
                     description: (value as { message: string }).message,
@@ -202,8 +203,7 @@ export const Editor: React.FC<EditorProps> = ({ subredditId }) => {
                 <div className="prose prose-stone dark:prose-invert">
                     <TextareaAutosize
                         ref={(e) => {
-                            titleRef(e);
-                            // @ts-ignore
+                            // titleRef(e);
                             _titleRef.current = e;
                         }}
                         {...rest}
